@@ -30,7 +30,7 @@ def run(save):
         print('OK',text,flush=True)
 
     with sync_playwright() as pw:
-        browser = pw.chromium.launch(executable_path=None if os.environ.get('PLAYWRIGHT_BUNDLED') else shutil.which('chromium'),
+        browser = pw.chromium.launch(channel='chromium',executable_path=None if os.environ.get('PLAYWRIGHT_BUNDLED') else shutil.which('chromium'),
             args=['--use-angle=swiftshader','--enable-unsafe-swiftshader'])
         ctx = browser.new_context(viewport={'width':1440,'height':900},accept_downloads=False)
         page = ctx.new_page()
@@ -87,13 +87,18 @@ def run(save):
         rect=canvas.bounding_box();x=rect['width']*.49;y=rect['y']+rect['height']*.48
         page.mouse.click(x,y);assert page.locator('#drawer').is_visible()
         page.keyboard.press('Escape')
-        click('#full');assert page.evaluate('!!document.fullscreenElement');click('#full')
+        click('#full')
+        page.wait_for_function('document.fullscreenElement === document.documentElement')
+        click('#full')
+        page.wait_for_function('document.fullscreenElement === null')
         passed('Modell-Picking, Fokussieren, Tastaturrotation, Reset, Escape und Vollbild')
         for cell,org,part,name in [('animal','nucleus','nucleolus','zellkern'),('animal','mito','crista','mitochondrium'),('plant','chloro','grana','chloroplast')]:
             choose(cell);inspect(org);snap(name)
             click('#catalog');click('[data-select='+part+']')
             if org=='nucleus':
                 assert 'rRNA' in page.locator('#content').inner_text()
+                page.get_by_text('Modellgrenzen',exact=True).click()
+                assert 'Porendichte' in page.locator('details[open]').inner_text()
                 snap('zellkern-information')
             click('[data-action=enter]')
             assert page.locator('#subtitle').inner_text()=='Feinstruktur im Einzelmodell'
