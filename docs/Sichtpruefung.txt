@@ -1,0 +1,25 @@
+Zellatlas – lokale Sichtprüfung
+ZIP entpacken und Zellatlas.html in einem aktuellen Browser öffnen. Alle Modelle,
+Schriften und Texte sind eingebettet. Bei gesperrten file:-URLs im entpackten
+Ordner mit Python 3 „python3 -m http.server 8765 --bind 127.0.0.1“ starten und
+im Browser 127.0.0.1:8765/Zellatlas.html öffnen.
+
+1. Unten links muss „WebGL 2“ stehen. Anfangs ist der Schnitt der Tierzelle zu
+   sehen. Drehen und von der Rückseite betrachten. Ganzes Modell schließen,
+   danach die Schnittansicht wiederherstellen. Mit den Vergleichsbildern prüfen.
+2. Bestandteile öffnen, Zellkern auswählen, „Organell untersuchen“. Den
+   Nucleolus auswählen, den Feinbau isolieren und über den Pfad zurückgehen.
+3. Dasselbe mit Cristae im Mitochondrium und mit Grana im Chloroplasten der
+   Pflanzenzelle wiederholen. „Bau und Lage“, „Funktion“ und „Modellgrenzen“
+   aufklappen. Ausblenden, drehen, erneut einblenden.
+4. Beim Pantoffeltierchen Cilien, Kerne und Vakuolen aufsuchen. Im Hochformat
+   Liste öffnen/schließen, mit einem Finger drehen, zwei Fingern zoomen, tippen.
+5. Optionalen Ebenenwechsel unter Bedienung einschalten. Nach Auswahl einer
+   Struktur mehrfach über 260 % zoomen; unter 61 % weiter herauszoomen.
+6. Browser neu laden. Die Ansicht startet wieder mit der Tierzelle.
+7. Für den LMS-Test das separate SCORM-ZIP unverändert importieren. Start,
+   Abbruch und erneutes Öffnen in itslearning testen. Die Anwendung übergibt
+   keine Antworten, Bewertungen, Fortschritts- oder Wiederaufnahmedaten.
+
+Gerät, Betriebssystem, Browser, Orientierung und abweichende Beobachtungen
+festhalten. Emulation und Software-WebGL sind keine Hardware-Freigabe.

@@ -1,31 +1,37 @@
-# Zellmodell
+# Zellatlas · Interaktives 3D-Zellmodell
 
-Interaktives Zellmodell für Biologie, Jahrgang 11. **Entwicklungsstand: Prototyp 0.2 (19.11.2026), nicht unterrichtlich abgenommen.**
+Tierzelle, chloroplastenhaltige Blattzelle und Pantoffeltierchen für den Biologieunterricht der Oberstufe. Eine Struktur im Modell oder im Verzeichnis auswählen, **Organell untersuchen** öffnen und einen Bestandteil als **Feinbau** isolieren. Über dem Modell führt der Pfad wieder zur Zelle.
 
-## Start
+![Schnittansicht der Tierzelle in WebGL 2](docs/pruefung/tierzelle.jpg)
 
-- `index.html` zusammen mit `app.js` öffnen. Beide Dateien müssen im selben Verzeichnis liegen.
-- Alternativ ist `standalone/Zellmodell_3D_eine_Datei.html` vollständig eigenständig und ohne Internetverbindung verwendbar.
-- Der WebGL2-Modus bietet eine räumlich drehbare Darstellung; wo WebGL2 fehlt, erscheint eine ausdrücklich gekennzeichnete 2D-Ersatzansicht.
+## Herunterladen und starten
 
-## Vorhandene Prototyp-Ansichten
+| Verwendung | Paket | Start |
+| --- | --- | --- |
+| Desktop, auch ohne Internet | [Desktop-ZIP herunterladen](https://github.com/Feerson1617/Zellmodell/raw/refs/heads/feature/zellmodell-3d-atlas/downloads/Zellatlas-Desktop.zip) | Entpacken und **Zellatlas.html** öffnen. Der Ordner **Sichtpruefung** enthält Vergleichsbilder und Bedienprüfungen. |
+| itslearning / SCORM 1.2 | [SCORM-ZIP herunterladen](https://github.com/Feerson1617/Zellmodell/raw/refs/heads/feature/zellmodell-3d-atlas/downloads/Zellatlas-SCORM12.zip) | Das ZIP als SCORM-Lernpaket importieren. Alle Inhalte, Schriften und Modelle sind enthalten. |
+| Website | [Startdatei](index.html) | Das Repository als statische Website ausliefern oder im Projektordner `python3 -m http.server 8765 --bind 127.0.0.1` starten. |
+| Einzeldatei | [Eigenständige HTML-Version](standalone/Zellmodell_3D_eine_Datei.html) | Lokal speichern und in einem WebGL-2-fähigen Browser öffnen. |
 
-- Pflanzenzelle
-- Tierzelle
-- Einzeller: Pantoffeltierchen (*Paramecium*, eukaryotischer Einzeller)
+Die aktiven Ansichten und Einstellungen gelten für die Sitzung. Der SCO ruft nur `LMSInitialize` und `LMSFinish` auf. Welche Zugriffsprotokolle ein Schul-LMS selbst führt, richtet sich nach dessen Konfiguration.
 
-Organellinformationen (einschließlich aufklappbarer Abschnitte), Zelltypen-Auswahl, Kamera, Labels, Hüllen-Schalter und Tastatur-/Touch-Bedienung sind angelegt.
+## Bedienung
 
-## Grenzen
+- Ziehen oder Pfeiltasten drehen das Modell. Mausrad, Pinch und +/− ändern den Zoom. Pos1 oder der Rückstellpfeil stellen die Kamera zurück.
+- Antippen oder Anklicken öffnet die Erklärung. Im Verzeichnis schaltet das Auge alle Exemplare einer Struktur. „Auswahl fokussieren“ zentriert die Kamera auf das gewählte Merkmal.
+- Schnittansicht öffnet die Hüllen. Ganzes Modell zeigt die Außenseite. Das Etikettensymbol schaltet die Beschriftungen. Das Vollbildsymbol erscheint bei verfügbarer Browser-Unterstützung.
+- Der Ebenenwechsel durch Zoom ist in **Bedienung** zuschaltbar. Eine Auswahl und weiteres Hineinzoomen über 260 % öffnen die Detailansicht. Unter 61 % führt weiteres Herauszoomen zurück.
+- **Modell & Quellen** enthält Modellgrenzen, die Endosymbiontentheorie und Literatur. Bei fehlendem WebGL 2 stehen die gekennzeichneten Schemata des Prototyps und das Textverzeichnis zur Verfügung.
 
-Der Quellcode des ursprünglichen, über Canva veröffentlichten Projekts `Modell Zellen` ist nicht zugänglich. Dieser Prototyp ist daher eine Neuentwicklung anhand bekannter Anforderungen, **keine belegte 1:1-Rekonstruktion der Canva-Anwendung**.
+## Entwicklung und Prüfung
 
-Bei der letzten Prüfung waren JS-Syntax und die 2D-Ersatzansicht überprüft. Eine visuelle **echte WebGL2-Darstellung**, iPad-/Safari-Hardware und der SCORM-Import konnten nicht abgenommen werden. Vor schulischer Freigabe müssen diese Prüfungen erfolgen.
+Die Anwendung verwendet lokal eingebundenes Three.js und prozedurale Geometrien. Der Start benötigt weder Installation noch Build. Änderungen gehören in `index.html`, `style.css`, `biology.js`, `models.js`, `view.js` und `app.js`. Der Build erzeugt die Einzeldatei sowie beide ZIPs aus denselben Quellen.
 
-Alle biologischen Formen, Farben und Größenverhältnisse sind modellhaft. Es dürfen keine realen Maßstäbe oder experimentellen Belege vorgetäuscht werden. Der Nucleolus ist kein Speicher für Proteinbauanleitungen: Seine Kernfunktion betrifft rRNA und die Bildung ribosomaler Untereinheiten.
+```sh
+python3 scripts/build.py
+python3 scripts/check_packages.py
+```
 
-## Weiterentwicklung
+Für die Browserprüfung Python-Playwright installieren und `python3 -m playwright install --with-deps chromium` ausführen. `python3 scripts/browser_check.py` startet einen kurzlebigen lokalen Server und prüft auch die Startdateien aus den ZIPs. Mit `--evidence` aktualisiert die Prüfung die Bilder und das Protokoll. Anschließend die Pakete neu bauen. GitHub Actions führt Build, Paket- und Browserprüfung aus und stellt die ZIPs als Artefakt bereit.
 
-Der nächste Auftrag für Codex steht in [docs/CODEX_AUFTRAG.md](docs/CODEX_AUFTRAG.md). Die ursprünglichen Canva-Ansichten und die vom Nutzer bereitgestellten Screenshots dienen als visuelle und funktionale Vergleichsreferenz.
-
-**Datenschutz:** keine Nutzerkonten, keine Analytik, keine Speicherung von Lernergebnissen; SCORM-Version soll ebenfalls vollständig sitzungsflüchtig sein.
+[Funktionsvergleich, fachliche Prüfung und Lizenzen](docs/ENTWICKLUNG.md) · [Prüfbericht mit Vergleichsbildern](docs/PRUEFBERICHT.md) · [Entwicklungsauftrag](docs/CODEX_AUFTRAG.md)

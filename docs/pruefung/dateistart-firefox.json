@@ -1,0 +1,10 @@
+{
+  "engine": "firefox",
+  "version": "153.0",
+  "mode": "WebGL 2",
+  "scheme": "file",
+  "network": "offline",
+  "selection": "Chloroplast",
+  "errors": [],
+  "external_requests": []
+}
