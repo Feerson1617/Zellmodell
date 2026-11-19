@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=5">
+  <meta name="theme-color" content="#101823">
+  <title>Zellmodell · interaktives 3D</title>
+  <style>
+    :root{color-scheme:dark;--panel:rgba(15,26,39,.79);--line:rgba(192,211,223,.18);--text:#eef6f9;--muted:#a6bac9;--accent:#a9dce1}
+    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{background:radial-gradient(ellipse at 52% 47%,#223b47 0%,#102333 47%,#07121f 95%);color:var(--text)}
+    body:after{content:"";position:fixed;inset:0;pointer-events:none;background:radial-gradient(ellipse at 54% 55%,transparent 35%,rgba(2,11,20,.27) 100%)}
+    canvas{display:block;position:fixed;inset:0;width:100vw;height:100dvh;touch-action:none;outline:none;cursor:grab} canvas.dragging{cursor:grabbing}
+    button,select{font:inherit} button{cursor:pointer}
+    .top{position:fixed;z-index:3;left:max(20px,env(safe-area-inset-left));top:max(18px,env(safe-area-inset-top));display:flex;align-items:center;gap:14px}
+    .brand{display:flex;align-items:center;gap:10px;text-shadow:0 2px 16px #08152180}.mark{width:29px;height:29px;border:1.5px solid #b6dddf;border-radius:9px;display:grid;place-items:center;color:#d2f4ee;font-size:17px}.brand strong{letter-spacing:.02em;font-weight:600;font-size:17px}.brand small{display:block;font-size:11px;font-weight:450;color:var(--muted);margin-top:1px}
+    .pick{display:flex;align-items:center;padding:4px;background:var(--panel);border:1px solid var(--line);border-radius:11px;backdrop-filter:blur(16px);box-shadow:0 8px 26px #020a1133}
+    .pick button{background:transparent;border:0;border-radius:7px;color:#adbdc9;padding:9px 13px;font-size:13px;line-height:1.1}.pick button[aria-pressed="true"]{background:#476777;color:white;box-shadow:0 1px 5px #0003}
+    .group{position:fixed;bottom:max(20px,env(safe-area-inset-bottom));left:max(20px,env(safe-area-inset-left));z-index:3;display:flex;gap:6px;padding:5px;border:1px solid var(--line);border-radius:11px;background:var(--panel);backdrop-filter:blur(18px)}
+    .group button,.compact{background:transparent;color:#cbdce7;border:0;border-radius:7px;min-width:39px;height:39px;padding:0 12px;font-size:14px;white-space:nowrap}
+    .group button:hover,.compact:hover{background:#ffffff19}.group button[aria-pressed="true"]{background:#456776;color:#fff}
+    .hint{position:fixed;right:max(24px,env(safe-area-inset-right));bottom:max(28px,env(safe-area-inset-bottom));z-index:2;color:#93aebd;font-size:12px;user-select:none;text-align:right;text-shadow:0 2px 8px #06111b}
+    .hint span{padding:0 3px}.cross{position:fixed;inset:50% auto auto 50%;pointer-events:none;width:5px;height:5px;border:1px solid rgba(255,255,255,.13);border-radius:50%;z-index:2;display:none}
+    .panel{position:fixed;top:88px;right:max(20px,env(safe-area-inset-right));z-index:5;width:min(334px,calc(100vw - 40px));max-height:calc(100dvh - 175px);overflow:auto;padding:20px 21px 21px;border:1px solid rgba(200,225,228,.24);background:rgba(10,22,33,.87);backdrop-filter:blur(22px);border-radius:14px;box-shadow:0 14px 58px #0007;transform:translateX(calc(100% + 30px));opacity:0;pointer-events:none;transition:transform .24s ease,opacity .24s ease}
+    .panel.open{transform:none;opacity:1;pointer-events:auto}.panel .head{display:flex;justify-content:space-between;align-items:start;gap:12px}.eyebrow{margin:0 0 8px;color:#91bccc;font-size:11px;letter-spacing:.1em;text-transform:uppercase}.panel h2{font-size:21px;line-height:1.2;letter-spacing:-.025em;font-weight:600;margin:0 0 15px}.panel p{line-height:1.53;color:#dae4e9;font-size:13px;margin:11px 0}.panel strong{color:#e8f4f5;font-weight:600}.panel .section{border-top:1px solid #ffffff23;padding-top:13px;margin-top:15px}.x{border:0;background:transparent;color:#bad0da;font-size:24px;padding:0 4px;line-height:1}.notice{font-size:11px!important;color:#9caeb8!important}
+    .list{display:grid;gap:3px;margin-top:10px}.list button{text-align:left;color:#e4edf2;padding:11px 12px;background:#ffffff07;border:1px solid transparent;border-radius:7px;font-size:13px}.list button:hover,.list button:focus-visible{background:#ffffff1d;border-color:#ffffff31}
+    .label{position:fixed;z-index:2;pointer-events:none;transform:translate(-50%,-50%);display:none;white-space:nowrap;border:1px solid #c1ebdd70;border-radius:20px;padding:4px 9px;background:#0a1c25b8;color:#d4ede9;font-size:11px;font-weight:500;text-shadow:0 1px 3px #0008;box-shadow:0 2px 10px #0003}
+    .panel details{margin-top:10px;border-top:1px solid #ffffff29;padding-top:11px} .panel summary{font-weight:600;font-size:13px;color:#e4f6f2;cursor:pointer;list-style-position:inside} .panel details p{margin:8px 0 2px;color:#ccdae2}.panel .mini-list{display:grid;gap:5px}.panel .mini-list button{background:#ffffff0b;color:#e3f2f2;border:1px solid #ffffff17;text-align:left;border-radius:7px;padding:9px 11px;font-size:13px}.panel .mini-list button:hover{background:#ffffff1b}.panel .intro{font-size:13px;color:#c9dce3}.panel .tag{font-size:11px;letter-spacing:.05em;color:#a8c7cb;text-transform:uppercase}.panel .modelDisclaimer{font-size:11px;color:#abbfc8;margin-top:16px}.fallback{display:none;position:fixed;inset:0;z-index:1;align-items:center;justify-content:center;padding:70px 8% 68px}.fallback-mode .fallback{display:flex}.fallback svg{width:min(100%,1220px);height:min(88vh,740px);filter:drop-shadow(0 10px 28px rgba(0,0,0,.24))}.fallback .svg-part{cursor:pointer;transition:filter .12s,opacity .12s}.fallback .svg-part:hover{filter:brightness(1.25)}.fallback .lbl{font-size:16px;fill:#eaf8f5;paint-order:stroke;stroke:#14303b;stroke-width:3px;stroke-linejoin:round;opacity:0}.fallback.show-labels .lbl{opacity:1}.fallback.hide-shell .shell{opacity:0!important}.fallback .watermark{fill:#a1bbc2;font-size:12px;opacity:.8}.fallback-mode .hint{display:none}.fallback-mode .panel{z-index:7} @media(max-width:730px){.fallback{padding:108px 5% 75px}.fallback svg{height:auto;max-height:70vh;transform:scale(1.22)}.panel{width:min(332px,calc(100vw - 20px));max-height:calc(100dvh - 172px)}}
+    .zero{position:fixed;left:50%;bottom:27px;transform:translateX(-50%);font-size:11px;color:#9dabb4;pointer-events:none;white-space:nowrap}
+    button:focus-visible{outline:2px solid #9bdddb;outline-offset:2px}
+    .screenreader{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+    @media(max-width:730px){.top{left:12px;right:12px;top:max(12px,env(safe-area-inset-top));flex-direction:column;align-items:stretch;gap:10px}.brand strong{font-size:15px}.brand small{font-size:10px}.pick{align-self:flex-start}.pick button{padding:8px 11px;font-size:12px}.group{left:10px;right:10px;bottom:max(10px,env(safe-area-inset-bottom));max-width:calc(100vw - 20px);gap:0;justify-content:space-between}.group button{font-size:11px;min-width:27px;padding:0 4px;height:35px}.hint{right:10px;bottom:58px;font-size:10px}.panel{right:10px;top:116px;max-height:calc(100dvh - 183px);padding:16px;width:min(320px,calc(100vw - 20px))}.zero{display:none}}
+    @media(prefers-reduced-motion:reduce){.panel{transition:none}}
+  </style>
+</head>
+<body>
+<canvas id="scene" tabindex="0" aria-label="Dreidimensionales, drehbares Zellmodell. Mit Maus oder Finger drehen, zoomen und Organellen auswählen."></canvas>
+<div class="top">
+ <div class="brand"><div class="mark" aria-hidden="true">◉</div><div><strong>Zellmodell</strong><small>Interaktives Strukturmodell</small></div></div>
+ <nav class="pick" aria-label="Zelltyp wählen">
+  <button type="button" data-cell="plant" aria-pressed="true">Pflanzenzelle</button><button type="button" data-cell="animal" aria-pressed="false">Tierzelle</button><button type="button" data-cell="ciliate" aria-pressed="false">Einzeller</button>
+ </nav>
+</div>
+<div class="group" aria-label="Modellwerkzeuge">
+ <button id="listBtn" title="Organellliste öffnen">Strukturen</button>
+ <button id="overviewBtn" title="Informationen zum Zelltyp öffnen">Informationen</button>
+ <button id="labelBtn" title="Beschriftungen ein- oder ausblenden" aria-pressed="false">Labels</button>
+ <button id="envelopeBtn" title="Zellhülle ein- oder ausblenden" aria-pressed="true">Hülle</button>
+ <button id="resetBtn" title="Ansicht zurücksetzen" aria-label="Ansicht zurücksetzen">↺</button>
+ <button id="helpBtn" title="Bedienhilfe anzeigen" aria-label="Bedienhilfe anzeigen">?</button>
+ <button id="fullBtn" title="Vollbildmodus" aria-label="Vollbildmodus">⛶</button>
+</div>
+<div class="hint"><span>Ziehen: drehen</span> · <span>Scrollen / Pinch: zoomen</span> · <span>Antippen: auswählen</span></div>
+<div id="labelLayer"></div>
+<aside class="panel" id="panel" aria-live="polite" aria-label="Informationen zum Modell"><div id="panelContent"></div></aside>
+<div class="screenreader" id="sr" aria-live="polite"></div>
+<script src="app.js"></script>
+</body>
+</html>
