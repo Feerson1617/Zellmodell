@@ -1,0 +1,5 @@
+vendor/three.min.js linguist-vendored
+vendor/*.woff2 binary
+scorm/*.xsd -text linguist-vendored
+standalone/*.html linguist-generated
+downloads/*.zip binary

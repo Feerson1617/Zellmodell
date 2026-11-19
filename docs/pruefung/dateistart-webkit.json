@@ -1,0 +1,10 @@
+{
+  "engine": "webkit",
+  "version": "26.5",
+  "mode": "WebGL 2",
+  "scheme": "file",
+  "network": "HTTP(S) blocked",
+  "selection": "Chloroplast",
+  "errors": [],
+  "external_requests": []
+}

@@ -1,0 +1,36 @@
+{
+  "browser": "Chromium 156.0.8078.79",
+  "renderer": [
+    "WebGL 2.0 (OpenGL ES 3.0 Chromium)",
+    "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (Subzero) (0x0000C0DE)), SwiftShader driver)"
+  ],
+  "desktop": [
+    1440,
+    900
+  ],
+  "emulated_tablet": [
+    [
+      1180,
+      820
+    ],
+    [
+      820,
+      1180
+    ]
+  ],
+  "checks": [
+    "WebGL 2 zeichnet mit positiver Draw-Call-Zahl, Modellfläche am Desktop >85 %",
+    "Zellwechsel und vollständige Strukturverzeichnisse aller drei Zelltypen",
+    "Schnitt/Ganzmodell, Beschriftungen, individuelle Sichtbarkeit und Alle einblenden mit Pixelvergleich",
+    "Modell-Picking, Fokussieren, Tastaturrotation, Reset, Escape und Vollbild",
+    "Zelle → Organell → isolierter Feinbau und Rückweg für Kern, Mitochondrium, Chloroplast",
+    "Optionaler Ebenenwechsel beim Zoomen in beide Richtungen, Quellen- und Theoriepanel",
+    "Geometrien und Erläuterungen für sämtliche im jeweiligen Zelltyp angebotenen Einzelstrukturen",
+    "Tablet-Emulation 1180×820 und 820×1180, echter Browser-Touchpfad für Drehen, Pinch, Tap und Drawer",
+    "Beide ZIP-Startdateien im Offline-Browser, kein Nachladen; LMS-Mock empfängt exakt Initialize und Finish",
+    "Ausdrücklich gekennzeichnete 2D-Ersatzansicht und Texte bei fehlendem WebGL 2",
+    "Keine Browserfehler oder externen Laufzeitanfragen"
+  ],
+  "errors": [],
+  "external_requests": []
+}
